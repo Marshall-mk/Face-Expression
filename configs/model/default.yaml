@@ -1,0 +1,11 @@
+name: FaceExpression
+save_path: C:/Users/HI/Desktop/.dev/python/Deep learning/Projects/FaceExpressionProject/models/1/emotionModel.hdf5
+ckpt_path: C:/Users/HI/Desktop/.dev/python/Deep learning/Projects/FaceExpressionProject/models/ckpt/emotionModel.hdf5
+onnx_path: C:/Users/HI/Desktop/.dev/python/Deep learning/Projects/FaceExpressionProject/models/1/emotionModel.onnx
+history_path: C:/Users/HI/Desktop/.dev/python/Deep learning/Projects/FaceExpressionProject/evaluation/
+
+Train_path: C:/Users/HI/Desktop/.dev/python/Deep learning/Projects/FaceExpressionProject/data/train/
+Test_path: C:/Users/HI/Desktop/.dev/python/Deep learning/Projects/FaceExpressionProject/data/test/
+image_size: 48
+load_with_info: False
+
