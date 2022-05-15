@@ -1,0 +1,10 @@
+fastapi==0.78.0
+hydra-core==1.1.2
+matplotlib==3.4.2
+mlflow==1.25.1
+numpy==1.22.3
+omegaconf==2.1.2
+onnxruntime==1.11.0
+Pillow==9.1.0
+tensorflow==2.8.0
+tf2onnx==1.9.3

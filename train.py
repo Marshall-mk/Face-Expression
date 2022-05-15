@@ -1,25 +1,16 @@
 from data import DataLoader # the data
 from model import FEModel # the model
-import os
 import hydra  # for configurations
 import tf2onnx # model conversion
-import datetime # for date
 import tensorflow as tf
 from omegaconf.omegaconf import OmegaConf # configs
 import matplotlib.pyplot as plt # plots
-import mlflow.keras # for tracking
-# import wandb
-# from wandb.keras import WandbCallback
+import mlflow # for tracking
 
 
-
-MLFLOW_TRACKING_URI="https://dagshub.com/Marshall-mk/FaceExpression.mlfow"
-# # MLFLOW_TRACKING_USERNAME= "Marshall-mk"
-# # MLFLOW_TRACKING_PASSWORD= "293464782615cda17c4724e11052f9db2a1bfb07"
-# os.environ["MLFLOW_TRACKING_USERNAME"] = "Marshall-mk"
-# os.environ["MLFLOW_TRACKING_PASSWORD"] = "293464782615cda17c4724e11052f9db2a1bfb07"
-
-
+EXPERIMENT_NAME = "facial-expression-recognition"
+EXPERIMENT_ID = mlflow.create_experiment(EXPERIMENT_NAME)
+MLFLOW_TRACKING_URI="https://dagshub.com/Marshall-mk/Face-Expression.mlflow"
 mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
 mlflow.tensorflow.autolog()
 
@@ -28,7 +19,6 @@ mlflow.tensorflow.autolog()
 def main(cfg):
     OmegaConf.to_yaml(cfg, resolve=True)
     """defines the data and the model"""
-    
     fe_data = DataLoader()
     fe_model = FEModel()
 
@@ -40,8 +30,6 @@ def main(cfg):
     checkpointer = tf.keras.callbacks.ModelCheckpoint(filepath=cfg.model.ckpt_path, save_weights_only=True, save_best_only=True)
     
     """Trains the model"""
-    # wandb.init(project="my-test-project", entity="marshallhamzah")
-    # wandb.config = {"learning_rate": 0.001, "epochs": 100, "batch_size": 128}
     with mlflow.start_run():
     # ... Define a model
         model_info = fe_model.train(
@@ -60,16 +48,12 @@ def main(cfg):
     fe_model.save(cfg.model.save_path)
 
     # """converting the model to onnx"""
-    # spec = (tf.TensorSpec((None, 224, 224, 3), tf.float32, name="input"),)
-    # output_path = cfg.model.onnx_path
-    # model_proto, _ = tf2onnx.convert.from_keras(fe_model, input_signature=spec, opset=13, output_path=output_path)
+    spec = (tf.TensorSpec((None, 48, 48, 1), tf.float32, name="input"),)
+    output_path = cfg.model.onnx_path
+    model_proto, _ = tf2onnx.convert.from_keras(fe_model, input_signature=spec, opset=13, output_path=output_path)
     
     """Model training history """
     _model_history(model_info=model_info, cfg=cfg)
-
-
-
-
 
 
 def _model_history(model_info, cfg):
